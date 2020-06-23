@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// immer help us to make immutable state for the grid
+import produce from "immer";
 
 const numRows = 50;
 const numCols = 50;
@@ -14,8 +16,6 @@ const Game = () => {
     return rows;
   });
 
-  console.log(grid);
-
   return (
     <div
       style={{
@@ -27,6 +27,12 @@ const Game = () => {
         rows.map((col, colIndex) => (
           <div
             key={`${rowIndex} - ${colIndex}`}
+            onClick={() => {
+              const newGrid = produce(grid, (gridCopy) => {
+                gridCopy[rowIndex][colIndex] = 1;
+              });
+              setGrid(newGrid);
+            }}
             style={{
               width: 20,
               height: 20,
