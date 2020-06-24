@@ -9,7 +9,7 @@ const numCols = 50;
 const operations = [
   [0, 1],
   [0, -1],
-  [1, 1],
+  [1, -1],
   [-1, 1],
   [1, 1],
   [-1, -1],
@@ -32,7 +32,7 @@ const Game = () => {
   // store in state if the simulation is currently running or not
   const [running, setRunning] = useState(false);
 
-  //create a referece for running state. Because running will change while our funtion won't change on every render
+  //create a referece for  running state. Because running will change while our funtion won't change on every render
   const runningRef = useRef(running);
   runningRef.current = running;
 
@@ -40,37 +40,34 @@ const Game = () => {
 
   //useCallback hook so the function doesn't run on every render
   const runSimulation = useCallback(() => {
-    if (!running) {
+    if (!runningRef.current) {
       return;
     }
     // -- simulation
     // I need a double for loop, one to loop throught the rows and another to loop throught the columns
     setGrid((g) => {
-      // produce creates anew grid and g is the current grid -> with setGrid we update the main grid
       return produce(g, (gridCopy) => {
         for (let i = 0; i < numRows; i++) {
-          for (let j = 0; j < numCols; j++) {
-            let neighboors = 0;
-            operations.forEach(([x, , y]) => {
+          for (let k = 0; k < numCols; k++) {
+            let neighbors = 0;
+            operations.forEach(([x, y]) => {
               const newI = i + x;
-              const newJ = j + y;
-              // make sure we stay within the boundaries
-              if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
-                // if we have a live cell add 1 to the neighboors
-                neighboors += g[newI][newJ];
+              const newK = k + y;
+              if (newI >= 0 && newI < numRows && newK >= 0 && newK < numCols) {
+                neighbors += g[newI][newK];
               }
             });
 
-            if (neighboors < 2 || neighboors > 3) {
-              gridCopy[i][j] = 0;
-            } else if (g[i][j] === 0 && neighboors === 3) {
-              gridCopy[i][j] = 1;
+            if (neighbors < 2 || neighbors > 3) {
+              gridCopy[i][k] = 0;
+            } else if (g[i][k] === 0 && neighbors === 3) {
+              gridCopy[i][k] = 1;
             }
           }
         }
       });
     });
-
+    // run it again in 1 sec
     setTimeout(runSimulation, 1000);
   }, []);
 
@@ -79,6 +76,11 @@ const Game = () => {
       <button
         onClick={() => {
           setRunning(!running);
+          if (!running) {
+            runningRef.current = true;
+            console.log(runningRef);
+            runSimulation();
+          }
         }}
       >
         {running ? "stop" : "start"}
