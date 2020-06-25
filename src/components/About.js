@@ -11,27 +11,33 @@ const Rules = () => {
           evolution is determined by its initial state. It consists of a grid of
           cells that can live, die or multiply based on a set of mathematical
           rules. For more info go{" "}
-          <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">
+          <a
+            href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             here!
           </a>
         </p>
       </div>
-      <h1>Rules</h1>
-      <div>
-        Any live cell with fewer than two lives the neighbours die, as if by
-        underpopulation.
-      </div>
-      <div>
-        Any live cell with two or three live neighbours lives on to the next
-        generation.
-      </div>
-      <div>
-        Any live cell with more than three live neighbours dies, as if by
-        overpopulation.
-      </div>
-      <div>
-        Any dead cell with exactly three live neighbours becomes a live cell, as
-        if by reproduction.
+      <div className="rules">
+        <h2>Rules</h2>
+        <div>
+          Any live cell with fewer than two lives the neighbours die, as if by
+          underpopulation.
+        </div>
+        <div>
+          Any live cell with two or three live neighbours lives on to the next
+          generation.
+        </div>
+        <div>
+          Any live cell with more than three live neighbours dies, as if by
+          overpopulation.
+        </div>
+        <div>
+          Any dead cell with exactly three live neighbours becomes a live cell,
+          as if by reproduction.
+        </div>
       </div>
     </div>
   );
